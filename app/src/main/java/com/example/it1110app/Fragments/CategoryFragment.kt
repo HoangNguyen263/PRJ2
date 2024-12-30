@@ -1,4 +1,4 @@
-package com.example.it1110app
+package com.example.it1110app.Fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.it1110app.Adapters.CategoryAdapter
+import com.example.it1110app.DbQuery
+import com.example.it1110app.R
 
 class CategoryFragment : Fragment() {
     // TODO: Rename and change types of parameters

@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.example.it1110app.DbQuery
 import com.example.it1110app.Models.CategoryModel
 import com.example.it1110app.R
-import com.example.it1110app.TestActivity
+import com.example.it1110app.Activities.TestActivity
 
 class CategoryAdapter(private var cat_list: MutableList<CategoryModel>) : BaseAdapter() {
 

@@ -1,4 +1,4 @@
-package com.example.it1110app
+package com.example.it1110app.Fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.example.it1110app.R
 import java.lang.Float.floatToIntBits
 import java.lang.Float.intBitsToFloat
 

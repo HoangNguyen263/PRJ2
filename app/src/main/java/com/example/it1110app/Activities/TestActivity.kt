@@ -1,4 +1,4 @@
-package com.example.it1110app
+package com.example.it1110app.Activities
 
 import android.app.Dialog
 import android.os.Bundle
@@ -13,6 +13,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.it1110app.Adapters.TestAdapter
+import com.example.it1110app.DbQuery
+import com.example.it1110app.MyCompleteListener
+import com.example.it1110app.R
 
 class TestActivity : AppCompatActivity() {
     private lateinit var testView: RecyclerView

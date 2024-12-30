@@ -5,7 +5,7 @@
     android:background="@color/main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyProfileActivity">
+    tools:context=".Activities.MyProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -174,5 +174,20 @@
             android:background="@color/colorPrimary"
             android:layout_weight="1"
             android:textColor="@color/white"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            />
+
+        <Button
+            android:id="@+id/change_password_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Password"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_gravity="center"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

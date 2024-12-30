@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.it1110app.DbQuery
 import com.example.it1110app.Models.TestModel
 import com.example.it1110app.R
-import com.example.it1110app.StartTestActivity
+import com.example.it1110app.Activities.StartTestActivity
 
 class TestAdapter(private val testList: MutableList<TestModel>) : RecyclerView.Adapter<TestAdapter.ViewHolder>() {
 

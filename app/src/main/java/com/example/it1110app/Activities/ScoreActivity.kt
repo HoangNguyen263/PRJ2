@@ -1,4 +1,4 @@
-package com.example.it1110app
+package com.example.it1110app.Activities
 
 import android.app.Dialog
 import android.content.Intent
@@ -9,11 +9,12 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.it1110app.DbQuery
 import com.example.it1110app.Models.QuestionModel
+import com.example.it1110app.MyCompleteListener
+import com.example.it1110app.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeUnit
 
 class ScoreActivity : AppCompatActivity() {
@@ -30,6 +31,7 @@ class ScoreActivity : AppCompatActivity() {
     private lateinit var progressDialog: Dialog
     private lateinit var dialogText: TextView
     private var finalScore : Int = 0
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +58,7 @@ class ScoreActivity : AppCompatActivity() {
         setBookMark()
 
         viewAnsB.setOnClickListener {
-            var intent: Intent = Intent(this@ScoreActivity,AnswerActivity::class.java)
+            var intent: Intent = Intent(this@ScoreActivity, AnswerActivity::class.java)
             startActivity(intent)
         }
 
@@ -103,7 +105,7 @@ class ScoreActivity : AppCompatActivity() {
 
         totalQTV.setText(DbQuery.g_questionList.size.toString())
 
-        finalScore = (correctQ * 100)/DbQuery.g_questionList.size
+        finalScore = (correctQ * 100)/ DbQuery.g_questionList.size
         scoreTV.setText(finalScore.toString())
 
         timeTaken = intent.getLongExtra("TIME_TAKEN",0)
@@ -139,7 +141,7 @@ class ScoreActivity : AppCompatActivity() {
             DbQuery.g_questionList[i].status = DbQuery.NOT_VISITED //reset status
         }
 
-        var intent: Intent = Intent(this@ScoreActivity,StartTestActivity::class.java)
+        var intent: Intent = Intent(this@ScoreActivity, StartTestActivity::class.java)
         startActivity(intent)
         finish()
     }

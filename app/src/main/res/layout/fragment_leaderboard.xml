@@ -6,7 +6,7 @@
     android:background="@drawable/main_background"
     android:backgroundTint="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".LeaderboardFragment">
+    tools:context=".Fragments.LeaderboardFragment">
 
     <LinearLayout
         android:id="@+id/leaderboard_header"

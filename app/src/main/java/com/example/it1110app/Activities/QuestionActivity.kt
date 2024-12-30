@@ -1,4 +1,4 @@
-package com.example.it1110app
+package com.example.it1110app.Activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.example.it1110app.Adapters.QuestionGridAdapter
 import com.example.it1110app.Adapters.QuestionsAdapter
+import com.example.it1110app.DbQuery
 import com.example.it1110app.DbQuery.Companion.NOT_VISITED
 import com.example.it1110app.DbQuery.Companion.REVIEW
 import com.example.it1110app.DbQuery.Companion.UNANSWERED
 import com.example.it1110app.DbQuery.Companion.g_questionList
+import com.example.it1110app.R
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
@@ -237,7 +239,7 @@ class QuestionActivity : AppCompatActivity() {
             timer.cancel()
             alertDialog.dismiss()
 
-            var intent:Intent= Intent(this@QuestionActivity,ScoreActivity::class.java)
+            var intent:Intent= Intent(this@QuestionActivity, ScoreActivity::class.java)
             //total time taken in milliseconds
             var totalTime : Int = DbQuery.g_testList.get(DbQuery.g_selected_test_index).time * 60 * 1000
             intent.putExtra("TIME_TAKEN",totalTime - timeLeft!!)
@@ -272,7 +274,7 @@ class QuestionActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                var intent:Intent= Intent(this@QuestionActivity,ScoreActivity::class.java)
+                var intent:Intent= Intent(this@QuestionActivity, ScoreActivity::class.java)
                 //total time taken in milliseconds
                 var totalTime : Int = DbQuery.g_testList.get(DbQuery.g_selected_test_index).time * 60 * 1000
                 intent.putExtra("TIME_TAKEN",totalTime - timeLeft!!)

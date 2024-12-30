@@ -1,4 +1,4 @@
-package com.example.it1110app
+package com.example.it1110app.Fragments
 
 import android.app.Dialog
 import android.content.Intent
@@ -12,9 +12,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.example.it1110app.Activities.BookmarkActivity
+import com.example.it1110app.Activities.LoginActivity
+import com.example.it1110app.Activities.MyProfileActivity
+import com.example.it1110app.DbQuery
 import com.example.it1110app.DbQuery.Companion.g_usersCount
 import com.example.it1110app.DbQuery.Companion.g_usersList
 import com.example.it1110app.DbQuery.Companion.myPerformance
+import com.example.it1110app.MyCompleteListener
+import com.example.it1110app.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

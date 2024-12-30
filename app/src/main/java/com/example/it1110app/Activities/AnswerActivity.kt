@@ -1,17 +1,16 @@
-package com.example.it1110app
+package com.example.it1110app.Activities
 
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.it1110app.Adapters.AnswerAdapter
+import com.example.it1110app.DbQuery
+import com.example.it1110app.R
 
 class AnswerActivity : AppCompatActivity() {
     private lateinit var toolbar : Toolbar

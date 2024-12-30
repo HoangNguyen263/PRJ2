@@ -2,11 +2,9 @@ package com.example.it1110app
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.navigation.NavigationView
@@ -14,6 +12,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.example.it1110app.Activities.BookmarkActivity
+import com.example.it1110app.Fragments.AccountFragment
+import com.example.it1110app.Fragments.BaseConversionFragment
+import com.example.it1110app.Fragments.CategoryFragment
+import com.example.it1110app.Fragments.IEEE754Fragment
+import com.example.it1110app.Fragments.LeaderboardFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 //handling navigation events and fragment transactions.

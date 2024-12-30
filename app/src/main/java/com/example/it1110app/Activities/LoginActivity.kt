@@ -1,9 +1,8 @@
-package com.example.it1110app
+package com.example.it1110app.Activities
 
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -11,15 +10,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.it1110app.DbQuery
+import com.example.it1110app.MainActivity
+import com.example.it1110app.MyCompleteListener
+import com.example.it1110app.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -116,7 +115,8 @@ class LoginActivity : AppCompatActivity() {
                     //if first time, create user data in firebase
                     if (task.getResult().additionalUserInfo!!.isNewUser())
                     {
-                        DbQuery().createUserData(user.email.toString(), user.displayName.toString(), object : MyCompleteListener {
+                        DbQuery().createUserData(user.email.toString(), user.displayName.toString(), object :
+                            MyCompleteListener {
                             override fun onSuccess() {
 
                                 //load categories before going to main activity

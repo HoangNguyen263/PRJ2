@@ -1,10 +1,11 @@
-package com.example.it1110app
+package com.example.it1110app.Activities
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -12,10 +13,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.it1110app.DbQuery
+import com.example.it1110app.MyCompleteListener
+import com.example.it1110app.R
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class MyProfileActivity : AppCompatActivity() {
     private lateinit var name: EditText
@@ -30,6 +34,8 @@ class MyProfileActivity : AppCompatActivity() {
     private var phoneStr : String = ""
     private lateinit var progressDialog: Dialog
     private lateinit var dialogText: TextView
+    private lateinit var changePasswordButton: Button
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +84,24 @@ class MyProfileActivity : AppCompatActivity() {
             if (validate()){
                 saveData()
             }
+        }
+
+        changePasswordButton = findViewById(R.id.change_password_button)
+        auth = FirebaseAuth.getInstance()
+
+        val user: FirebaseUser? = auth.currentUser
+        if (user != null) {
+            for (profile in user.providerData) {
+                if (profile.providerId == EmailAuthProvider.PROVIDER_ID) {
+                    changePasswordButton.visibility = View.VISIBLE
+                } else {
+                    changePasswordButton.visibility = View.GONE
+                }
+            }
+        }
+
+        changePasswordButton.setOnClickListener {
+            showChangePasswordDialog()
         }
 
     }
@@ -145,6 +169,52 @@ class MyProfileActivity : AppCompatActivity() {
                 progressDialog.dismiss()
             }
         })
+    }
+
+    private fun showChangePasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_change_password, null)
+        val currentPassword = dialogView.findViewById<EditText>(R.id.current_password)
+        val newPassword = dialogView.findViewById<EditText>(R.id.new_password)
+        val confirmNewPassword = dialogView.findViewById<EditText>(R.id.confirm_new_password)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setTitle("Change Password")
+            .setPositiveButton("Confirm") { _, _ ->
+                val currentPasswordStr = currentPassword.text.toString()
+                val newPasswordStr = newPassword.text.toString()
+                val confirmNewPasswordStr = confirmNewPassword.text.toString()
+
+                if (newPasswordStr == confirmNewPasswordStr) {
+                    changePassword(currentPasswordStr, newPasswordStr)
+                } else {
+                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        dialog.show()
+    }
+
+    private fun changePassword(currentPassword: String, newPassword: String) {
+        val user = auth.currentUser
+        if (user != null && user.email != null) {
+            val credential = EmailAuthProvider.getCredential(user.email!!, currentPassword)
+            user.reauthenticate(credential).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    user.updatePassword(newPassword).addOnCompleteListener { updateTask ->
+                        if (updateTask.isSuccessful) {
+                            Toast.makeText(this, "Password changed successfully", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Password change failed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

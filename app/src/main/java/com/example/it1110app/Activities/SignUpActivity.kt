@@ -1,4 +1,4 @@
-package com.example.it1110app
+package com.example.it1110app.Activities
 
 import android.app.Dialog
 import android.content.Intent
@@ -10,6 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.it1110app.DbQuery
+import com.example.it1110app.MainActivity
+import com.example.it1110app.MyCompleteListener
+import com.example.it1110app.R
 import com.google.firebase.auth.FirebaseAuth
 
 class SignUpActivity : AppCompatActivity() {

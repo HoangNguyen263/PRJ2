@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.it1110app.DbQuery
-import com.example.it1110app.QuestionActivity
+import com.example.it1110app.Activities.QuestionActivity
 import com.example.it1110app.R
 
 class QuestionGridAdapter(private var context : Context,private var numOfQues : Int) : BaseAdapter() {
