@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/scrollview_background"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/base_theory"
+            android:textSize="14sp"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:elevation="2dp"
+            android:lineSpacingExtra="4dp"
+            android:letterSpacing="0.05"
+            android:scrollbars="none"
+            />
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview"
+        >
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Công cụ chuyển đổi"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#006400"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="(Chọn, nhập thông số và ấn >>>)"
+            android:textColor="#006400"
+            android:textSize="14sp"
+            android:layout_gravity="center_horizontal" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@drawable/round_view"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            >
+
+            <LinearLayout
+                android:id="@+id/linear_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="#FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button_convert"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="8dp">
+
+                <!-- Spinner: Hệ đếm cơ số (Input) -->
+                <TextView
+                    android:id="@+id/label_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hệ đếm cơ số"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="4dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_input_base"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/spinner_background"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- EditText: Nhập số cần đổi -->
+                <EditText
+                    android:id="@+id/edittext_input_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/edittext_background"
+                    android:hint="Nhập giá trị"
+                    android:padding="10dp"
+                    android:textSize="16sp"
+                    />
+            </LinearLayout>
+
+            <!-- Nút chuyển đổi (ở giữa) -->
+            <Button
+                android:id="@+id/button_convert"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:text=">>>"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/button_background"
+                app:layout_constraintStart_toEndOf="@+id/linear_left"
+                app:layout_constraintEnd_toStartOf="@+id/linear_right"
+                app:layout_constraintTop_toTopOf="@+id/linear_left"
+                app:layout_constraintBottom_toBottomOf="@+id/linear_left" />
+
+            <!-- Khu vực bên phải -->
+            <LinearLayout
+                android:id="@+id/linear_right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="#FFFFFF"
+                app:layout_constraintStart_toEndOf="@+id/button_convert"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintTop_toTopOf="@+id/linear_left"
+                app:layout_constraintBottom_toBottomOf="@+id/linear_left">
+
+                <!-- Spinner: Hệ đếm cơ số (Output) -->
+                <TextView
+                    android:id="@+id/label_output"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hệ đếm cơ số"
+                    android:textSize="14sp"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="4dp" />
+
+                <Spinner
+                    android:id="@+id/spinner_output_base"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/spinner_background"
+                    />
+
+                <!-- TextView: Hiển thị kết quả -->
+                <TextView
+                    android:id="@+id/textview_output_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/output_background"
+                    android:text="Kết quả"
+                    android:padding="10dp"
+                    android:textSize="16sp"
+                    android:gravity="center" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

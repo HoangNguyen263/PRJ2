@@ -1,0 +1,152 @@
+<resources>
+    <string name="app_name">IT1110 APP</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="your_web_client_id">642704326044-0bhrsd78v8t7a2eh9r13f73ss647luiq.apps.googleusercontent.com</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ieee754_theory">
+        <b>LÍ THUYẾT</b>\n
+✪ Là chuẩn mã hóa số dấu chấm động\n
+✪ Cơ số R = 2\n
+✪ Có các dạng cơ bản:\n
+● Dạng có độ chính xác đơn, 32-bit\n
+\t1 bit dấu s | 8 bit mã lệch e | 23 bit phần lẻ m\n
+● Dạng có độ chính xác kép, 64-bit\n
+\t1 bit dấu s | 11 bit mã lệch e | 52 bit phần lẻ m\n
+● Dạng có độ chính xác kép mở rộng, 80-bit\n
+\t1 bit dấu s | 15 bit mã lệch e | 64 bit phần lẻ m\n
+
+✪ Xác định:\n
+● Bit dấu s (sign):\n
+\t- s = 0 biểu thị số dương\n
+\t- s = 1 biểu thị số âm\n
+● Mã lệch e (excess) của phần mũ E (Exponent):\n
+\tE = e – b\n
+\tTrong đó b là độ lệch (bias):\n
+\t\t- Dạng 32-bit: b = 127, hay E = e - 127\n
+\t\t- Dạng 64-bit: b = 1023, hay E = e - 1023\n
+\t\t- Dạng 80-bit: b = 16383, hay E = e - 16383\n
+● Phần lẻ m của phần định trị M:\n
+\tM = 1.m\n
+\t(Ví dụ trong tin học, số 1,77611176 ghi là 1.77611176, nên bạn hiểu 1.m là 1,m.\n
+\tỞ đây, dấu nhân được ký hiệu là "x")\n
+
+✪ Công thức xác định giá trị của số thực X tương ứng là:\n
+\tX = (-1)^s x 1.m x 2^(e-b)\n
+
+✪ Hướng dẫn chuyển đổi xuôi và ngược:\n
+Tôi chỉ làm ví dụ và hướng dẫn với dạng chính xác đơn 32 bit:\n
+● Công thức:\n
+\tX = (-1)^s x 1.m x 2^(e-127)\n
+
+________________________________________\n
+● Chuyển từ dạng biểu diễn nhị phân theo chuẩn IEEE 754/85 về số thực X:\n
+Nhập số dưới dạng chuẩn IEEE 754/85 chính xác đơn (32 bit):\n
+Ví dụ:\n
+\t11000001010101100000000000000000\n
+
+Thao tác tính toán:\n
+- Dấu của X: Bit dấu s = 1 => X là số âm\n
+- Phần mũ E : mã lệch e = 10000010<sub>2</sub> = 130<sub>10</sub>\n
+\t=> E = e - 127 = 130 - 127 = 3\n
+- Phần định trị M = 1.m = 1.101011<sub>2</sub> = 1.671875<sub>10</sub>\n
+Ta có:\n
+\t1.m x 2^(e-127)\n
+\t= 1.671875 x 2^3\n
+\t= 13.375\n
+
+(Ở đây, ta đổi phần định trị 1.m từ hệ nhị phân về thập phân, sau đó nhân với 2^(e-127) để nhận được giá trị thực của X.\n
+Hoặc có thể để nguyên phần định trị 1.m ở hệ nhị phân rồi nhân với 10^(e-127), sau đó chuyển kết quả thu được về hệ thập phân để thu được giá trị thực của X.)\n
+
+Vì X là số âm, nên giá trị số thực X = -13.375.\n
+
+Quy ước:\n
+- Nếu tất cả các bit của e và m đều bằng 0 thì X = 0\n
+- Nếu tất cả các bit của e bằng 1 và m bằng 0 thì X = ±∞\n
+- Nếu tất cả các bit của e bằng 1 và ít nhất 1 bit của m bằng 1, thì số thực X không tồn tại.\n
+
+Với Ví dụ trên, theo quy ước: X = -13.375.\n
+
+________________________________________\n
+● Chuyển từ số thực X về dạng biểu diễn nhị phân theo chuẩn IEEE 754/85:\n
+
+Ví dụ:\n
+Số thực X: -13.375\n
+- Là số âm => s = 1\n
+- Phần nguyên 13<sub>10</sub> = 1101<sub>2</sub>\n
+\tPhần thập phân 0.375<sub>10</sub> = 0.011<sub>2</sub>\n
+=> 13.375<sub>10</sub> = 1101.011 = 1.101011 x 2^3\n
+
+(10 ở hệ nhị phân bằng 2 ở hệ thập phân, ví dụ: 10^3<sub>2</sub> = 2^3<sub>10</sub>)\n
+
++ Phần mũ E = 3 => e = E + 127 = 130<sub>10</sub> = 10000010<sub>2</sub>\n
++ Phần định trị m = 10101100000000000000000\n
+
+Số thực X vừa nhập chuyển về dạng chuẩn IEEE 754/85 là:\n
+\t11000001010101100000000000000000\n
+</string>
+<string name="base_theory">
+    <b>LÍ THUYẾT</b>\n
+      ✪ Hệ đếm cơ số n (n≥2):\n
+        ● Có n chữ số để biểu diễn số.\n
+        ● Chữ số dùng biểu diễn nhỏ nhất là 0, lớn nhất là n-1.\n
+        _ Ví dụ trong hệ đếm cơ số 4:\n
+        + Số được biểu diễn bởi 4 chữ số {0;1;2;3}\n
+        + Liền sau số 3 sẽ là số 10 vì trong hệ đếm này không tồn tại chữ số 4,5,...,9.\n
+        + Số lớn nhất có 2 chữ số là 33, liền sau 33 là 100.\n
+        + 3+1=10 ; 3+2=11 ; 31+3=100 ... Vì từ nhỏ chúng ta đã được học và sử dụng hệ đếm cơ số 10 (hệ thập phân) nên khi quy ước về các hệ đếm khác ta thường thấy khó hiểu, vì nó làm thay đổi kết quả những đẳng thức mà ta cứ mặc nhiên là đúng bấy lâu nay.\n
+        Khi nói đến hệ đếm cơ số 4 chỉ được biểu diễn bởi 4 chữ số {0;1;2;3}, trong đầu bạn phải gạt bỏ tất cả những chữ số {4;5;6;7;8;9} ra, chúng không tồn tại, chúng vô nghĩa, và chúng không phải là chữ số.\n
+        Các phép cộng trừ chỉ là các phép dịch trái, dịch phải trên trục số, khi trục số không có chữ số 4,5,6,7,8,9 thì hiển nhiên sau số 3 là số 10, sau số 13 là số 20 ... Và 22+2 không phải bằng 24 nữa mà 22+2=30\n
+        Tương tự với các hệ đếm cơ số khác, bạn chỉ coi những chữ số được dùng để biểu diễn là có nghĩa, còn lại thì lờ nó đi.\n
+        _ Với các hệ đếm cơ số 11,12... thì các chữ cái A,B,C... được bổ sung vào tập những chữ số được dùng để biểu diễn số trong hệ đếm.\n
+        Ví dụ trong hệ đếm cơ số 12:\n
+        + Số được biểu diễn bởi 12 chữ số {0;1;2;3;4;5;6;7;8;9;A;B}\n
+        Trong đó ...0&lt;1&lt;2&lt;3&lt;...&lt;9&lt;A&lt;B&lt;10&lt;11...&lt;19&lt;1A&lt;1B&lt;20...\n
+        + Liền sau số 9 là số A và sau đó là số B rồi mới đến số 10.\n
+        + Số lớn nhất có 2 chữ số là BB và liền sau nó là 100.\n
+        + 9+1=A ; 9+2=B ; 9+3=10 ...\n
+        ✪ Phương pháp chuyển đổi giữa các hệ đếm cơ số:\n
+        ● Đổi từ hệ đếm cơ số 10 về hệ đếm cơ số n bất kì (n≥2):\n
+        _ Gọi số cần chuyển là X (X10 → Xn)\n
+        + Phần nguyên (trước dấu phẩy)\n
+        Lấy phần nguyên của số X chia cho n được thương và số dư\n
+        Tiếp tục lấy thương vừa tìm được chia cho n được thương mới và số dư mới\n
+        Lấy tiếp thương mới chia cho n để nhận thương mới và số dư mới khác\n
+        Cứ làm như vậy cho đến khi thương bằng 0 thì ngừng lại\n
+        Viết liền nhau các số dư nhận được từ mới đến cũ\n
+        + Phần lẻ (sau dấu phẩy)\n
+        Lấy phần lẻ sau dấu phẩy của X nhân với n được tích, nhớ phần nguyên của tích\n
+        Lấy phần lẻ của tích vừa tìm được nhân với n được tích mới, nhớ phần nguyên của tích mới\n
+        Tiếp tục làm tương tự với phần lẻ của tích mới cho đến khi phần lẻ của tích mới bằng 0\n
+        Viết liền nhau các phần nguyên của tích sau mỗi lần nhớ từ cũ đến mới\n
+        _ Ví dụ 1 : X10=25.437510→ X2=?:\n
+        + Phần nguyên: (Chuyển từ hệ 10 về hệ 2 nên ta chia cho 2)\n
+        Phần nguyên	Chia cho 2\n
+        Thương	Số dư\n
+        25	12	1\n
+        12	6	0\n
+        6	3	0\n
+        3	1	1\n
+        1	0	1\n
+        Viết liền nhau các số dư nhận được từ mới đến cũ\n
+        Suy ra 2510=110012\n
+        + Phần lẻ: (Chuyển từ hệ 10 về hệ 2 nên ta nhân với 2)\n
+        Phần lẻ	Nhân với 2\n
+        Phần nguyên của tích	Phần lẻ của tích\n
+        0.4375	0	.875\n
+        0.875	1	.75\n
+        0.75	1	.5\n
+        0.5	1	.0\n
+        Viết liền nhau các phần nguyên của tích nhận được từ cũ đến mới\n
+        Suy ra 0.437510=0.01112\n
+        Vậy 25.437510=11001.01112\n
+</string>
+</resources>

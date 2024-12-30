@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account"
+            android:title="My Account" />
+        <item
+            android:id="@+id/nav_leaderboard"
+            android:icon="@drawable/ic_leaderboard"
+            android:title="Leaderboard" />
+
+        <item
+            android:id="@+id/nav_bookmark"
+            android:icon="@drawable/ic_bookmarked"
+            android:title="Saved Questions" />
+
+        <item
+            android:enabled="false"
+            android:title=""
+            android:icon="@android:color/transparent" />
+
+        <item
+            android:id="@+id/nav_ieee754"
+            android:icon="@drawable/ic_ieee754"
+            android:title="IEEE 754 Converter" />
+        <item
+            android:id="@+id/nav_base_conversion"
+            android:icon="@drawable/ic_ieee754"
+            android:title="Base Conversion" />
+    </group>
+</menu>
