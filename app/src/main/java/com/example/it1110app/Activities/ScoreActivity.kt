@@ -3,6 +3,7 @@ package com.example.it1110app.Activities
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.Button
@@ -16,6 +17,8 @@ import com.example.it1110app.MyCompleteListener
 import com.example.it1110app.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.concurrent.TimeUnit
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class ScoreActivity : AppCompatActivity() {
     private lateinit var scoreTV : TextView
@@ -27,7 +30,6 @@ class ScoreActivity : AppCompatActivity() {
     private lateinit var leaderB: Button
     private lateinit var reAttemptB: Button
     private lateinit var viewAnsB: Button
-    private var timeTaken : Long = 0
     private lateinit var progressDialog: Dialog
     private lateinit var dialogText: TextView
     private var finalScore : Int = 0
@@ -51,7 +53,18 @@ class ScoreActivity : AppCompatActivity() {
         dialogText.text = "Loading..."
         progressDialog.show()
 
+
+
         init()
+
+        val extras = intent.extras
+        if (extras != null) {
+            for (key in extras.keySet()) {
+                val value = extras.get(key)
+                Log.d("ScoreActivity", "Intent extra: $key = $value")
+            }
+        }
+
 
         loadData()
 
@@ -67,7 +80,16 @@ class ScoreActivity : AppCompatActivity() {
         }
 
         //save result to db
-        saveResult()
+        lifecycleScope.launch {
+            saveResult()
+         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (progressDialog.isShowing) {
+            progressDialog.dismiss()
+        }
     }
 
     private fun init(){
@@ -108,7 +130,8 @@ class ScoreActivity : AppCompatActivity() {
         finalScore = (correctQ * 100)/ DbQuery.g_questionList.size
         scoreTV.setText(finalScore.toString())
 
-        timeTaken = intent.getLongExtra("TIME_TAKEN",0)
+        val timeTaken = intent.getLongExtra("TIME_TAKEN",0)
+        Log.d("ScoreActivity", "TIME_TAKEN: $timeTaken")
         var time : String = String.format("%02d:%02d min",
             TimeUnit.MILLISECONDS.toMinutes(timeTaken),
             TimeUnit.MILLISECONDS.toSeconds(timeTaken) -
@@ -146,19 +169,29 @@ class ScoreActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun saveResult(){
+    private suspend fun saveResult(){
         //function to DbQuery to save result to database
-        DbQuery().saveResult(finalScore, object : MyCompleteListener {
-            override fun onSuccess() {
+//        DbQuery().saveResult(finalScore, object : MyCompleteListener {
+//            override fun onSuccess() {
+//                Log.d("ScoreActivity", "saveResult success")
+//                progressDialog.dismiss()
+//            }
+//
+//            override fun onFailure() {
+//                progressDialog.dismiss()
+//                Toast.makeText(this@ScoreActivity, "Failed to save result", Toast.LENGTH_SHORT).show()
+//            }
+//        })
+        lifecycleScope.launch {
+            val isSuccess = DbQuery().saveResult(finalScore)  // Chờ kết quả từ saveResult
+            if (isSuccess) {
+                Log.d("ScoreActivity", "saveResult success")
                 progressDialog.dismiss()
-            }
-
-            override fun onFailure() {
-
+            } else {
+                progressDialog.dismiss()
                 Toast.makeText(this@ScoreActivity, "Failed to save result", Toast.LENGTH_SHORT).show()
-                progressDialog.dismiss()
             }
-        })
+        }
     }
 
     // Handle back button

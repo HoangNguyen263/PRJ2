@@ -20,6 +20,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.WriteBatch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
 class DbQuery {
@@ -53,6 +56,11 @@ class DbQuery {
 
         fun initializeFirestore() {
             g_firestore = FirebaseFirestore.getInstance()
+        }
+
+        // Hàm tính tổng điểm cao nhất của các bài test
+        private fun calculateTotalScore(): Int {
+            return g_testList.sumBy { it.topScore }
         }
     }
 
@@ -108,48 +116,58 @@ class DbQuery {
             })
     }
 
-    //save result to database
-    public fun saveResult(score: Int, completeListener: MyCompleteListener){
-        var batch : WriteBatch = g_firestore.batch()
+    // Hàm saveResult tối ưu
+    public suspend fun saveResult(score: Int): Boolean {
+        val batch: WriteBatch = g_firestore.batch()
 
-        //upload bookmark id list to db
-        var bmData : MutableMap<String, Any> = ArrayMap()
-        for (i in 0..g_bookmarkIdList.size -1){
-            bmData.put("BM" + (i+1).toString() + "_ID",g_bookmarkIdList.get(i))
-        }
-
-        var bmDoc: DocumentReference = g_firestore.collection("USERS")
-            .document(FirebaseAuth.getInstance().uid!!)
-            .collection("USER_DATA")
-            .document("MY_BOOKMARKS")
-        batch.set(bmDoc,bmData)
-
-        var userDoc: DocumentReference = g_firestore.collection("USERS")
-            .document(FirebaseAuth.getInstance().uid!!)
-
-        var userData : MutableMap<String, Any> = ArrayMap()
-        userData.put("TOTAL_SCORE",score)
-        userData.put("MY_BOOKMARKS",g_bookmarkIdList.size)
-
-        batch.update(userDoc,userData)
-
-        if(score > g_testList.get(g_selected_test_index).topScore){
-            var scoreDoc : DocumentReference = userDoc.collection("USER_DATA")
-                .document("MY_SCORE")
-            var testData : Map<String, Object> = ArrayMap()
-            (testData as MutableMap<String, Any>).put(g_testList.get(g_selected_test_index).testId!!, score)
-            batch.set(scoreDoc, testData, SetOptions.merge())
-        }
-
-        batch.commit().addOnSuccessListener {
-            if (score > g_testList.get(g_selected_test_index).topScore){
-                g_testList.get(g_selected_test_index).topScore = score
+        // Thêm dữ liệu bookmark nếu cần
+        if (g_bookmarkIdList.isNotEmpty()) {
+            val bmData: MutableMap<String, Any> = ArrayMap()
+            g_bookmarkIdList.forEachIndexed { index, bookmarkId ->
+                bmData["BM${index + 1}_ID"] = bookmarkId
             }
 
-            myPerformance.score = score
-            completeListener.onSuccess()
-        }.addOnFailureListener {
-            completeListener.onFailure()
+            val bmDoc: DocumentReference = g_firestore.collection("USERS")
+                .document(FirebaseAuth.getInstance().uid!!)
+                .collection("USER_DATA")
+                .document("MY_BOOKMARKS")
+            batch.set(bmDoc, bmData)
+        }
+
+        // Cập nhật thông tin người dùng
+        val userDoc: DocumentReference = g_firestore.collection("USERS")
+            .document(FirebaseAuth.getInstance().uid!!)
+        Log.e("saveResult", "Top score1: ${g_testList[g_selected_test_index].topScore}, Score1: ${score}")
+
+
+//        Log.e("saveResult", "Checkpoint 1: ${userData}")
+
+
+        // Cập nhật điểm nếu cần
+        Log.e("saveResult", "Top score2: ${g_testList[g_selected_test_index].topScore}, Score2: ${score}")
+        if (score > g_testList[g_selected_test_index].topScore) {
+            g_testList[g_selected_test_index].topScore = score
+
+            val scoreDoc: DocumentReference = userDoc.collection("USER_DATA")
+                .document("MY_SCORE")
+            val testData: MutableMap<String, Any> = ArrayMap()
+            testData[g_testList[g_selected_test_index].testId!!] = score
+            batch.set(scoreDoc, testData, SetOptions.merge())
+            Log.e("saveResult", "testData: ${testData}")
+        }
+        val totalScore = calculateTotalScore()
+        val userData: MutableMap<String, Any> = ArrayMap()
+        userData["TOTAL_SCORE"] = totalScore
+        userData["MY_BOOKMARKS"] = g_bookmarkIdList.size
+        batch.update(userDoc, userData)
+
+        // Commit batch bằng coroutine
+        return try {
+            batch.commit().await() // Dùng `.await()` để chờ commit hoàn thành
+            true
+        } catch (e: Exception) {
+            Log.e("saveResult", "Error: ${e.message}")
+            false
         }
     }
 
@@ -308,18 +326,23 @@ class DbQuery {
     public fun loadQuestions(completeListener: MyCompleteListener){
         g_questionList.clear()
         //fetch questions from firebase and store in the list
+        val category = g_catList[g_selected_cat_index].docID
+        val test = g_testList[g_selected_test_index].testId
+        Log.d("DbQuery", "Querying for CATEGORY: $category, TEST: $test")
         g_firestore.collection("Questions")
             .whereEqualTo("CATEGORY",g_catList.get(g_selected_cat_index).docID)
             .whereEqualTo("TEST",g_testList.get(g_selected_test_index).testId)
             .get()
             .addOnSuccessListener(object : OnSuccessListener<QuerySnapshot> {
                 override fun onSuccess(queryDocumentSnapshot: QuerySnapshot) {
-
+                    Log.d("DbQuery", "Total documents fetched: ${queryDocumentSnapshot.size()}")
                     for (doc: DocumentSnapshot in queryDocumentSnapshot){
+                        Log.d("DbQuery", "Document data: ${doc.data}")
                         var isBookmarked : Boolean = false
                         if (g_bookmarkIdList.contains(doc.id)){
                             isBookmarked = true
                         }
+
                         g_questionList.add(
                             QuestionModel(
                                 doc.id,
@@ -335,11 +358,13 @@ class DbQuery {
                             )
                         )
                     }
+                    Log.d("DbQuery", "Question size: ${g_questionList.size}")
                     completeListener.onSuccess()
                 }
             })
             .addOnFailureListener(object : OnFailureListener {
                 override fun onFailure(e: Exception) {
+
                     completeListener.onFailure()
                 }
             })

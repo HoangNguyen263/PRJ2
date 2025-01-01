@@ -3,6 +3,7 @@ package com.example.it1110app.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.GridView
@@ -47,7 +48,7 @@ class QuestionActivity : AppCompatActivity() {
     private lateinit var markImage : ImageView
     private lateinit var quesGridAdapter : QuestionGridAdapter
     private lateinit var timer : CountDownTimer
-    private var timeLeft: Int? = null
+    private var timeLeft: Long? = null
     private lateinit var bookmarkB : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -241,7 +242,12 @@ class QuestionActivity : AppCompatActivity() {
 
             var intent:Intent= Intent(this@QuestionActivity, ScoreActivity::class.java)
             //total time taken in milliseconds
-            var totalTime : Int = DbQuery.g_testList.get(DbQuery.g_selected_test_index).time * 60 * 1000
+            var totalTime : Long = (DbQuery.g_testList.get(DbQuery.g_selected_test_index).time * 60 * 1000).toLong()
+            val timeTaken = totalTime - (timeLeft ?: 0)
+            Log.d("QuestionActivity", "totalTime: $totalTime")
+            Log.d("QuestionActivity", "timeLeft: $timeLeft")
+            Log.d("QuestionActivity", "timeTaken: $timeTaken")
+            //Log.d("QuestionActivity", "totalTime - timeLeft: ${totalTime - timeLeft!!}")
             intent.putExtra("TIME_TAKEN",totalTime - timeLeft!!)
             startActivity(intent)
             finish()
@@ -263,7 +269,7 @@ class QuestionActivity : AppCompatActivity() {
         //start timer
         timer = object : CountDownTimer(totalTime.toLong(), 1000){
             override fun onTick(remainingTime: Long) {
-                timeLeft = remainingTime.toInt()
+                timeLeft = remainingTime
                 var time : String = String.format("%02d:%02d min",
                     TimeUnit.MILLISECONDS.toMinutes(remainingTime),
                     TimeUnit.MILLISECONDS.toSeconds(remainingTime) -
@@ -276,7 +282,9 @@ class QuestionActivity : AppCompatActivity() {
             override fun onFinish() {
                 var intent:Intent= Intent(this@QuestionActivity, ScoreActivity::class.java)
                 //total time taken in milliseconds
-                var totalTime : Int = DbQuery.g_testList.get(DbQuery.g_selected_test_index).time * 60 * 1000
+                var totalTime : Long = (DbQuery.g_testList.get(DbQuery.g_selected_test_index).time * 60 * 1000).toLong()
+                Log.d("QuestionActivity", "timeLeft: $timeLeft")
+                Log.d("QuestionActivity", "totalTime - timeLeft: ${totalTime - timeLeft!!}")
                 intent.putExtra("TIME_TAKEN",totalTime - timeLeft!!)
                 startActivity(intent)
                 finish()
